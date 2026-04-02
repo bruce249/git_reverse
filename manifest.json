@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "GitHub Reverse - Repository Analyzer",
+  "description": "Analyze GitHub repositories and generate reverse-engineering prompts, summaries, and improvement recommendations using LLMs.",
+  "version": "1.0.0",
+  "permissions": ["activeTab", "storage"],
+  "host_permissions": [
+    "https://api.github.com/*",
+    "https://generativelanguage.googleapis.com/*",
+    "https://api-inference.huggingface.co/*",
+    "https://openrouter.ai/*",
+    "https://api.x.ai/*",
+    "https://api.anthropic.com/*",
+    "https://api.openai.com/*"
+  ],
+  "action": {
+    "default_popup": "src/popup/index.html",
+    "default_icon": {
+      "16": "src/assets/icons/icon-16.png",
+      "48": "src/assets/icons/icon-48.png",
+      "128": "src/assets/icons/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "src/assets/icons/icon-16.png",
+    "48": "src/assets/icons/icon-48.png",
+    "128": "src/assets/icons/icon-128.png"
+  },
+  "options_page": "src/options/index.html",
+  "background": {
+    "service_worker": "src/background/index.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["src/content/index.ts"],
+      "run_at": "document_idle"
+    }
+  ]
+}
