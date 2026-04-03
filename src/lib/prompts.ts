@@ -45,8 +45,8 @@ export function buildReversePromptPrompt(
   summary: string,
 ): { system: string; user: string } {
   return {
-    system: `You are an expert prompt engineer and software architect. Your job is to produce a detailed, step-by-step meta-prompt that another developer (or AI) could follow to rebuild an entire project from scratch. The prompt should be self-contained and actionable.`,
-    user: `Based on the following repository analysis, generate a comprehensive "rebuild from scratch" prompt.
+    system: `You are an expert prompt engineer and software architect. You produce a single, complete, self-contained prompt that someone can copy-paste directly into an AI assistant to rebuild a project from scratch. Your output must be ONE continuous prompt with no separate sections, no meta-commentary, no "here is your prompt" preamble, and no closing remarks. Just the prompt itself, start to finish.`,
+    user: `Based on the following repository analysis, generate a single, unified "rebuild from scratch" prompt.
 
 **Repository:** ${ctx.owner}/${ctx.repo}
 **Summary:**
@@ -57,18 +57,14 @@ ${summary}
 ${ctx.fileTree}
 \`\`\`
 
-Generate a detailed, numbered step-by-step prompt that covers:
-1. **Project initialization** — Exact commands to set up the project, install dependencies
-2. **Architecture setup** — Directory structure, configuration files
-3. **Core implementation** — Key modules to build, in dependency order
-4. **Data models & types** — Important interfaces, schemas, database models
-5. **API / routing layer** — Endpoints, pages, or CLI commands
-6. **Business logic** — The critical algorithms or workflows
-7. **Styling & UI** — Frontend approach if applicable
-8. **Testing strategy** — What to test and how
-9. **Build & deployment** — Build configuration, CI/CD considerations
-
-The output should be a single prompt that someone could paste into an AI assistant to rebuild this project. Use markdown formatting. Be specific about technologies and file names — not vague or generic.`,
+CRITICAL INSTRUCTIONS FOR YOUR OUTPUT:
+- Output ONLY the prompt itself. Do not wrap it in quotes or code blocks.
+- Do NOT start with "Here is..." or "Below is..." or any preamble. Start directly with the instruction to the AI.
+- Do NOT end with "Let me know..." or any closing commentary.
+- The entire output should be ONE single continuous prompt that covers: project setup, dependencies, directory structure, configuration files, all core modules (in build order), data models, API/routing, business logic, styling/UI, and build/deployment.
+- Be extremely specific: name exact packages with versions where possible, reference actual file paths from the repo structure, and describe the real architecture.
+- The prompt should flow as one cohesive instruction document, not as disconnected numbered sections.
+- Use markdown formatting within the prompt for readability.`,
   }
 }
 
@@ -78,8 +74,8 @@ export function buildImprovementsPrompt(
   summary: string,
 ): { system: string; user: string } {
   return {
-    system: `You are a senior software consultant performing a technical review. Provide actionable, prioritized recommendations. Focus on real improvements, not nitpicks.`,
-    user: `Based on the following repository analysis, suggest meaningful improvements.
+    system: `You are a senior software consultant performing a technical review. Provide a single, complete analysis document with all recommendations in one response. Do not split your answer into multiple parts or say "continued in part 2". Deliver everything in one go.`,
+    user: `Based on the following repository analysis, suggest meaningful improvements. Deliver ALL recommendations in a single, complete response.
 
 **Repository:** ${ctx.owner}/${ctx.repo}
 **Summary:**
@@ -90,20 +86,14 @@ ${summary}
 ${ctx.fileTree}
 \`\`\`
 
-Provide recommendations in these categories:
+Cover these areas in one unified document:
+- Missing features the project should add
+- Architecture improvements for better maintainability
+- Performance optimizations for specific bottlenecks
+- Security enhancements and best practices not yet followed
+- Developer experience improvements (tooling, docs, testing)
+- Scalability considerations (what breaks at 10x or 100x)
 
-1. **Missing Features** — Important functionality the project should add
-2. **Architecture Improvements** — Structural changes for better maintainability
-3. **Performance Optimizations** — Specific bottlenecks or inefficiencies to address
-4. **Security Enhancements** — Vulnerabilities or best practices not yet followed
-5. **Developer Experience** — Tooling, documentation, or testing improvements
-6. **Scalability Considerations** — What would break at 10x or 100x scale
-
-For each recommendation:
-- Explain **what** to change and **why**
-- Rate priority as 🔴 High, 🟡 Medium, or 🟢 Low
-- Keep it actionable — a developer should know exactly what to do
-
-Aim for 6-10 recommendations total. Use markdown formatting.`,
+For each recommendation, explain what to change, why it matters, and rate priority (High / Medium / Low). Aim for 6-10 recommendations. Use markdown formatting. Output everything in one complete response.`,
   }
 }

@@ -11,7 +11,9 @@
     "https://openrouter.ai/*",
     "https://api.x.ai/*",
     "https://api.anthropic.com/*",
-    "https://api.openai.com/*"
+    "https://api.openai.com/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*"
   ],
   "action": {
     "default_popup": "src/popup/index.html",
@@ -26,7 +28,7 @@
     "48": "src/assets/icons/icon-48.png",
     "128": "src/assets/icons/icon-128.png"
   },
-  "options_page": "src/options/index.html",
+  "options_page": "src/dashboard/index.html",
   "background": {
     "service_worker": "src/background/index.ts",
     "type": "module"

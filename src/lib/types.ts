@@ -10,16 +10,23 @@ export type ProviderId =
   | 'grok'
   | 'anthropic'
   | 'openai'
+  | 'local'
 
-/** Configuration for a single LLM provider */
+/** Configuration for a cloud LLM provider */
 export interface ProviderConfig {
   modelName: string
   apiKey: string
 }
 
-/** Display metadata for each provider (used in the Options UI) */
+/** Configuration for a local LLM server (Ollama, LM Studio, etc.) */
+export interface LocalProviderConfig {
+  modelName: string
+  serverUrl: string // e.g. http://localhost:11434
+}
+
+/** Display metadata for each cloud provider (used in the Settings UI) */
 export interface ProviderMeta {
-  id: ProviderId
+  id: Exclude<ProviderId, 'local'>
   label: string
   placeholder: string // example model name
   docsUrl: string
@@ -27,11 +34,12 @@ export interface ProviderMeta {
 
 /** The full settings object persisted in chrome.storage.local */
 export interface ExtensionSettings {
-  providers: Record<ProviderId, ProviderConfig>
+  providers: Record<Exclude<ProviderId, 'local'>, ProviderConfig>
+  localProvider: LocalProviderConfig
   defaultProvider: ProviderId | null
 }
 
-/** All supported providers with their UI metadata */
+/** All supported cloud providers with their UI metadata */
 export const PROVIDERS: ProviderMeta[] = [
   {
     id: 'google',
